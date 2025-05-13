@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Профиль пользователя {{ current_user.name }}</h1>
-    <br><br>
-    <p>Эл. почта: {{ current_user.email }}</p>
-    <br>
-    <p>Bio:</p>
-    <p>{{ current_user.about }}</p>
-    <br>
-    <br>
-    <a class="btn btn-danger" href="/logout">Выйти из аккаунта</a>
+<h1>Профиль пользователя {{ current_user.name }}</h1>
+<br><br>
+<p>Эл. почта: {{ current_user.email }}</p>
+<br>
+<p>Bio:</p>
+<p>{{ current_user.about }}</p>
+<br>
+<p>Аккаунт создан {{ current_user.modified_date.strftime('%Y-%m-%d') }}</p>
+<br>
+<br>
+<a class="btn btn-danger" href="/logout">Выйти из аккаунта</a>
 {% endblock %}
