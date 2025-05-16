@@ -75,7 +75,10 @@ def login():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html', title='Профиль пользователя')
+    db_session.global_init('db/blogs.db')
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    return render_template('profile.html', title='Профиль пользователя', news=news)
 
 
 @app.route('/about')
@@ -156,6 +159,21 @@ def news_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/deleted')
+@login_required
+def user_delete():
+    db_session.global_init('db/users.db')
+    db_session.global_init('db/blogs.db')
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    db_sess.delete(user)
+    for article in db_sess.query(News):
+        if not article.user:
+            db_sess.delete(article)
+    db_sess.commit()
+    return render_template('deleted.html', title='Вы удалили аккаунт')
 
 
 if __name__ == '__main__':

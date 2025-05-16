@@ -9,6 +9,31 @@
 <br>
 <p>Аккаунт создан {{ current_user.modified_date.strftime('%Y-%m-%d') }}</p>
 <br>
+<p>Новости пользователя:</p>
+{% for item in news%}
+<div class="col-md6 border rounded">
+    {% if item.user == current_user %}
+    <h2>{{item.title}}</h2>
+    <div>
+        {{item.content}}
+    </div>
+    <div>
+        Дата публикации - {{item.created_date.strftime('%Y-%m-%d')}}
+    </div>
+    {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/news/{{ item.id }}" class="btn btn-warning">
+            Редактировать
+        </a>
+        <a href="/news_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endfor %}
 <br>
 <a class="btn btn-danger" href="/logout">Выйти из аккаунта</a>
+<a class="btn btn-danger" href="/deleted">Удалить аккаунт</a>
 {% endblock %}
