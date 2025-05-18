@@ -12,9 +12,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
-# На данном этапе разработки этот класс
-
+news_flag = False
 
 @app.route("/")
 def index():
@@ -96,6 +94,7 @@ def logout():
 @app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
+    global news_flag
     form = NewsForm()
     if form.validate_on_submit():
         db_session.global_init('db/blogs.db')
@@ -107,6 +106,7 @@ def add_news():
         news.user = user
         db_sess.add(news)
         db_sess.commit()
+        news_flag = True
         return redirect('/')
     return render_template('news.html', title='Добавление новости',
                            form=form)
